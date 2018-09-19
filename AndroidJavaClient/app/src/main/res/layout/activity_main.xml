@@ -17,10 +17,12 @@
         android:transcriptMode="alwaysScroll">
     </ListView>
     <EditText
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
         android:id="@+id/etMessageText"
-        android:hint="Enter Message" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Message"
+        android:singleLine="true"
+        android:imeOptions="actionDone" />
     <Button
         android:text="Send"
         android:layout_width="match_parent"
