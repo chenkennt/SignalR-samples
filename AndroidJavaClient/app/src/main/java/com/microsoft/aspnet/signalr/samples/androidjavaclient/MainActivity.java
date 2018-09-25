@@ -27,8 +27,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void connect() {
         ChatRoomApplication app = (ChatRoomApplication)getApplication();
+
+        class HubConnectTask extends AsyncTask<Void, Void, Exception> {
+            protected Exception doInBackground(Void... args) {
+                try {
+                    app.connect();
+                } catch (Exception ex) {
+                    return ex;
+                }
+
+                return null;
+            }
+        }
+
         try {
-            app.connect();
+            Exception ex = new HubConnectTask().execute().get();
+            if (ex != null) error(ex);
         } catch (Exception ex) {
             error(ex);
         }
@@ -92,13 +106,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        class HubConnectTask extends AsyncTask<Void, Void, Void> {
-            protected Void doInBackground(Void... args) {
-                connect();
-                return null;
-            }
-        }
-
         if (!app.isConnected()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Input your name");
@@ -115,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     app.setUsername(input.getText().toString());
-                    new HubConnectTask().execute();
+                    connect();
                 }
             });
 
